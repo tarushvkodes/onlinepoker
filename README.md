@@ -1,22 +1,28 @@
-# 🃏 Texas Hold'em Poker
+# 🃏 Online Poker Games
 
-A fully functional Texas Hold'em poker game that runs entirely in the browser. Play against AI bots with adjustable difficulty levels!
+A collection of poker games that run entirely in the browser!
 
-## 🎮 Features
+## 🎮 Games Available
 
-- **Texas Hold'em Rules**: Complete implementation of Texas Hold'em poker rules
+### Texas Hold'em Poker
+A fully functional Texas Hold'em poker game. Play against AI bots with adjustable difficulty levels!
+
 - **Bot Opponents**: Play against 1-5 AI opponents
-- **Difficulty Levels**:
-  - **Easy**: Random play, perfect for beginners
-  - **Medium**: Uses basic strategy and pot odds
-  - **Hard**: Advanced AI with position awareness and bluffing
+- **Difficulty Levels**: Easy, Medium, and Hard AI
 - **Customizable Bankroll**: Choose from $500 to $10,000 starting chips
-- **Responsive Design**: Works on desktop and mobile devices
-- **No Server Required**: Runs entirely in the browser - perfect for GitHub Pages
+
+### Balatro - Roguelike Poker
+A roguelike deck-building poker game inspired by Balatro! Play poker hands to score points and beat the blinds.
+
+- **Score-based Gameplay**: Play poker hands to earn points
+- **Blinds System**: Beat Small, Big, and Boss blinds to advance
+- **Strategic Choices**: Manage your hands and discards wisely
+- **Progressive Difficulty**: Ante increases as you progress
 
 ## 🚀 Play Now
 
-Visit the live game at: [https://tarushvkodes.github.io/onlinepoker/](https://tarushvkodes.github.io/onlinepoker/)
+- **Texas Hold'em**: [https://tarushvkodes.github.io/onlinepoker/](https://tarushvkodes.github.io/onlinepoker/)
+- **Balatro**: [https://tarushvkodes.github.io/onlinepoker/balatro.html](https://tarushvkodes.github.io/onlinepoker/balatro.html)
 
 ## 🎲 How to Play
 
@@ -50,16 +56,20 @@ Then visit `http://localhost:8000`
 ## 📁 Project Structure
 
 ```
-├── index.html          # Main HTML file
+├── index.html          # Texas Hold'em game
+├── balatro.html        # Balatro roguelike poker
 ├── css/
-│   └── styles.css      # Styling
+│   ├── styles.css      # Texas Hold'em styling
+│   └── balatro.css     # Balatro styling
 ├── js/
 │   ├── cards.js        # Card deck and dealing
 │   ├── hand-evaluator.js # Hand ranking logic
 │   ├── bot-ai.js       # AI opponent logic
 │   ├── poker-engine.js # Game rules engine
 │   ├── game.js         # Main game controller
-│   └── ui.js           # UI interactions
+│   ├── ui.js           # UI interactions
+│   ├── balatro-game.js # Balatro game engine
+│   └── balatro-ui.js   # Balatro UI controller
 └── README.md
 ```
 
