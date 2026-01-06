@@ -5,14 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Texas Hold'em Poker</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/navigation.css">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🃏</text></svg>">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="nav-bar">
-        <a href="index.html" class="nav-link active">🃏 Texas Hold'em</a>
-        <a href="blackjack.html" class="nav-link">♠️ Blackjack</a>
+    <!-- Navigation Arrows -->
+    <nav class="game-nav left">
+        <a href="blackjack.html" class="nav-arrow">
+            <span class="arrow-icon">←</span>
+            <span class="game-name">Blackjack</span>
+        </a>
     </nav>
+    <nav class="game-nav right">
+        <a href="balatro.html" class="nav-arrow">
+            <span class="arrow-icon">→</span>
+            <span class="game-name">Balatro</span>
+        </a>
+    </nav>
+
+    <!-- Navigation Dots -->
+    <div class="nav-dots">
+        <a href="index.html" class="nav-dot active" data-game="Texas Hold'em"></a>
+        <a href="blackjack.html" class="nav-dot" data-game="Blackjack"></a>
+        <a href="balatro.html" class="nav-dot" data-game="Balatro"></a>
+    </div>
 
     <!-- Setup Screen -->
     <div id="setup-screen" class="screen">

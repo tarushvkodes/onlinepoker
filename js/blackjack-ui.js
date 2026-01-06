@@ -1,6 +1,5 @@
 /**
- * UI Module for Blackjack
- * Handles all DOM manipulation and user interactions
+ * Blackjack UI Module
  */
 
 class BlackjackUI {
@@ -10,7 +9,7 @@ class BlackjackUI {
     }
 
     /**
-     * Initialize UI elements
+     * Initialize UI
      */
     init() {
         this.cacheElements();
@@ -22,328 +21,331 @@ class BlackjackUI {
      */
     cacheElements() {
         // Screens
-        this.elements.setupScreen = document.getElementById('setup-screen');
+        this.elements.menuScreen = document.getElementById('menu-screen');
+        this.elements.rulesScreen = document.getElementById('rules-screen');
         this.elements.gameScreen = document.getElementById('game-screen');
-        this.elements.endScreen = document.getElementById('end-screen');
+        this.elements.gameoverScreen = document.getElementById('gameover-screen');
 
-        // Setup form
-        this.elements.playerName = document.getElementById('player-name');
-        this.elements.bankroll = document.getElementById('bankroll');
-        this.elements.minBet = document.getElementById('min-bet');
-        this.elements.startBtn = document.getElementById('start-btn');
+        // Menu
+        this.elements.startingChips = document.getElementById('starting-chips');
+        this.elements.startGameBtn = document.getElementById('start-game-btn');
+        this.elements.rulesBtn = document.getElementById('rules-btn');
+        this.elements.backFromRulesBtn = document.getElementById('back-from-rules-btn');
 
-        // Game elements
-        this.elements.playerNameDisplay = document.getElementById('player-name-display');
+        // Game
         this.elements.playerChips = document.getElementById('player-chips');
-        this.elements.currentBet = document.getElementById('current-bet');
-        this.elements.playerCards = document.getElementById('player-cards');
         this.elements.dealerCards = document.getElementById('dealer-cards');
-        this.elements.playerValue = document.getElementById('player-value');
-        this.elements.dealerValue = document.getElementById('dealer-value');
-        this.elements.gameLog = document.getElementById('game-log');
+        this.elements.playerCards = document.getElementById('player-cards');
+        this.elements.dealerScore = document.getElementById('dealer-score');
+        this.elements.playerScore = document.getElementById('player-score');
+        this.elements.gameStatus = document.getElementById('game-status');
+        this.elements.statusText = document.getElementById('status-text');
 
-        // Controls
-        this.elements.bettingControls = document.getElementById('betting-controls');
+        // Betting
+        this.elements.bettingArea = document.getElementById('betting-area');
+        this.elements.currentBet = document.getElementById('current-bet');
+        this.elements.chipBtns = document.querySelectorAll('.chip-btn');
+        this.elements.clearBetBtn = document.getElementById('clear-bet-btn');
+        this.elements.dealBtn = document.getElementById('deal-btn');
+
+        // Actions
         this.elements.actionButtons = document.getElementById('action-buttons');
-        this.elements.newRoundControls = document.getElementById('new-round-controls');
-        
-        this.elements.betButtons = document.querySelectorAll('.bet-btn');
-        this.elements.customBetInput = document.getElementById('custom-bet-input');
-        this.elements.placeBetBtn = document.getElementById('place-bet-btn');
-        
         this.elements.hitBtn = document.getElementById('hit-btn');
         this.elements.standBtn = document.getElementById('stand-btn');
         this.elements.doubleBtn = document.getElementById('double-btn');
-        this.elements.newRoundBtn = document.getElementById('new-round-btn');
 
-        // End screen
-        this.elements.endTitle = document.getElementById('end-title');
-        this.elements.endMessage = document.getElementById('end-message');
-        this.elements.playAgainBtn = document.getElementById('play-again-btn');
+        // New hand
+        this.elements.newHandArea = document.getElementById('new-hand-area');
+        this.elements.newHandBtn = document.getElementById('new-hand-btn');
+
+        // Game over
+        this.elements.restartBtn = document.getElementById('restart-btn');
     }
 
     /**
      * Attach event listeners
      */
     attachEventListeners() {
-        // Setup screen
-        this.elements.startBtn.addEventListener('click', () => this.startGame());
-        this.elements.playerName.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') this.startGame();
-        });
+        // Menu
+        this.elements.startGameBtn.addEventListener('click', () => this.startGame());
+        this.elements.rulesBtn.addEventListener('click', () => this.showScreen('rules'));
+        this.elements.backFromRulesBtn.addEventListener('click', () => this.showScreen('menu'));
 
-        // Betting controls
-        this.elements.betButtons.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const amount = parseInt(e.target.dataset.amount, 10);
-                this.placeBet(amount);
+        // Betting
+        this.elements.chipBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const value = parseInt(btn.dataset.value);
+                this.addBet(value);
             });
         });
+        this.elements.clearBetBtn.addEventListener('click', () => this.clearBet());
+        this.elements.dealBtn.addEventListener('click', () => this.deal());
 
-        this.elements.placeBetBtn.addEventListener('click', () => {
-            const amount = parseInt(this.elements.customBetInput.value, 10);
-            if (amount && amount > 0) {
-                this.placeBet(amount);
-                this.elements.customBetInput.value = '';
-            }
-        });
+        // Actions
+        this.elements.hitBtn.addEventListener('click', () => this.hit());
+        this.elements.standBtn.addEventListener('click', () => this.stand());
+        this.elements.doubleBtn.addEventListener('click', () => this.double());
 
-        this.elements.customBetInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const amount = parseInt(this.elements.customBetInput.value, 10);
-                if (amount && amount > 0) {
-                    this.placeBet(amount);
-                    this.elements.customBetInput.value = '';
-                }
-            }
-        });
+        // New hand
+        this.elements.newHandBtn.addEventListener('click', () => this.newHand());
 
-        // Action buttons
-        this.elements.hitBtn.addEventListener('click', () => {
-            if (this.game) this.game.hit();
-        });
-
-        this.elements.standBtn.addEventListener('click', () => {
-            if (this.game) this.game.stand();
-        });
-
-        this.elements.doubleBtn.addEventListener('click', () => {
-            if (this.game) this.game.doubleDown();
-        });
-
-        this.elements.newRoundBtn.addEventListener('click', () => {
-            this.startNewRound();
-        });
-
-        // End screen
-        this.elements.playAgainBtn.addEventListener('click', () => {
-            this.showScreen('setup');
-        });
+        // Restart
+        this.elements.restartBtn.addEventListener('click', () => this.showScreen('menu'));
     }
 
     /**
-     * Start the game
+     * Show specific screen
+     */
+    showScreen(screen) {
+        this.elements.menuScreen.classList.add('hidden');
+        this.elements.rulesScreen.classList.add('hidden');
+        this.elements.gameScreen.classList.add('hidden');
+        this.elements.gameoverScreen.classList.add('hidden');
+
+        switch (screen) {
+            case 'menu':
+                this.elements.menuScreen.classList.remove('hidden');
+                break;
+            case 'rules':
+                this.elements.rulesScreen.classList.remove('hidden');
+                break;
+            case 'game':
+                this.elements.gameScreen.classList.remove('hidden');
+                break;
+            case 'gameover':
+                this.elements.gameoverScreen.classList.remove('hidden');
+                break;
+        }
+    }
+
+    /**
+     * Start new game
      */
     startGame() {
-        const settings = {
-            playerName: this.elements.playerName.value.trim() || 'Player',
-            bankroll: parseInt(this.elements.bankroll.value, 10),
-            minBet: parseInt(this.elements.minBet.value, 10)
-        };
-
+        const startingChips = parseInt(this.elements.startingChips.value);
         this.game = new window.BlackjackGame();
-        this.game.ui = this;
-        this.game.init(settings);
-
-        this.elements.playerNameDisplay.textContent = this.game.playerName;
+        this.game.init(startingChips);
         this.showScreen('game');
-        this.showBettingControls();
-        this.updateChipsDisplay();
-        this.log('Game started! Place your bet.');
+        this.updateDisplay();
     }
 
     /**
-     * Place a bet
+     * Add bet
      */
-    placeBet(amount) {
-        if (this.game && this.game.placeBet(amount)) {
-            this.hideBettingControls();
-            this.showActionButtons();
+    addBet(amount) {
+        if (this.game.addBet(amount)) {
+            this.updateDisplay();
         }
     }
 
     /**
-     * Start a new round
+     * Clear bet
      */
-    startNewRound() {
-        this.hideNewRoundButton();
-        this.showBettingControls();
-        this.updateChipsDisplay();
-        this.log('Place your bet for the next round.');
+    clearBet() {
+        this.game.clearBet();
+        this.updateDisplay();
     }
 
     /**
-     * Update game state display
+     * Deal cards
      */
-    updateGameState() {
-        this.renderHand(this.game.playerHand, this.elements.playerCards, false);
-        this.renderHand(this.game.dealerHand, this.elements.dealerCards, !this.game.roundInProgress);
-        
-        const playerValue = this.game.getHandValue(this.game.playerHand);
-        this.elements.playerValue.textContent = playerValue;
+    deal() {
+        if (this.game.deal()) {
+            this.updateDisplay();
+        }
+    }
 
-        if (this.game.roundInProgress && this.game.dealerHand.length > 0) {
-            // Only show first card value when dealer card is hidden
-            const visibleCard = this.game.dealerHand[0];
-            const visibleValue = this.game.getHandValue([visibleCard]);
-            this.elements.dealerValue.textContent = visibleValue;
+    /**
+     * Hit
+     */
+    hit() {
+        this.game.hit();
+        this.updateDisplay();
+    }
+
+    /**
+     * Stand
+     */
+    stand() {
+        this.game.stand();
+        this.updateDisplay();
+    }
+
+    /**
+     * Double
+     */
+    double() {
+        this.game.double();
+        this.updateDisplay();
+    }
+
+    /**
+     * New hand
+     */
+    newHand() {
+        if (this.game.playerChips <= 0) {
+            this.showScreen('gameover');
+            return;
+        }
+        this.game.newHand();
+        this.updateDisplay();
+    }
+
+    /**
+     * Update display
+     */
+    updateDisplay() {
+        const state = this.game.getState();
+
+        // Update chips
+        this.elements.playerChips.textContent = `$${state.playerChips}`;
+        this.elements.currentBet.textContent = `$${state.currentBet}`;
+
+        // Update deal button
+        this.elements.dealBtn.disabled = state.currentBet <= 0;
+
+        // Render cards
+        this.renderCards(state);
+
+        // Update scores
+        this.updateScores(state);
+
+        // Show/hide areas based on game state
+        this.updateGameAreas(state);
+
+        // Show result if game ended
+        if (state.gameState === 'ended') {
+            this.showResult(state.result);
+        }
+    }
+
+    /**
+     * Render cards
+     */
+    renderCards(state) {
+        // Player cards
+        this.elements.playerCards.innerHTML = state.playerHand.map(card => 
+            this.renderCard(card, true)
+        ).join('');
+
+        // Dealer cards
+        if (state.gameState === 'betting') {
+            this.elements.dealerCards.innerHTML = '';
+        } else if (state.gameState === 'playing') {
+            // Show first card face up, second face down
+            this.elements.dealerCards.innerHTML = state.dealerHand.map((card, index) => 
+                index === 0 ? this.renderCard(card, true) : this.renderCard(card, false)
+            ).join('');
         } else {
-            const dealerValue = this.game.getHandValue(this.game.dealerHand);
-            this.elements.dealerValue.textContent = dealerValue;
-        }
-
-        this.updateChipsDisplay();
-        
-        // Update double down button availability
-        if (this.game.playerHand.length === 2 && this.game.currentBet <= this.game.playerChips) {
-            this.elements.doubleBtn.disabled = false;
-        } else {
-            this.elements.doubleBtn.disabled = true;
+            // Show all dealer cards
+            this.elements.dealerCards.innerHTML = state.dealerHand.map(card => 
+                this.renderCard(card, true)
+            ).join('');
         }
     }
 
     /**
-     * Render a hand of cards
+     * Render single card
      */
-    renderHand(hand, container, revealAll) {
-        container.innerHTML = '';
-        
-        hand.forEach((card, index) => {
-            const cardElement = document.createElement('div');
-            cardElement.className = 'card';
-            
-            // Hide dealer's second card if round is in progress
-            if (!revealAll && index === 1 && container === this.elements.dealerCards) {
-                cardElement.classList.add('card-back');
-                cardElement.textContent = '🂠';
-            } else {
-                this.renderCard(card, cardElement);
-            }
-            
-            container.appendChild(cardElement);
-        });
-    }
-
-    /**
-     * Render a single card
-     */
-    renderCard(card, element) {
-        const suitSymbols = {
-            'hearts': '♥',
-            'diamonds': '♦',
-            'clubs': '♣',
-            'spades': '♠'
-        };
-
-        const isRed = card.suit === 'hearts' || card.suit === 'diamonds';
-        element.classList.add(isRed ? 'red' : 'black');
-        
-        element.innerHTML = `
-            <div class="card-corner top-left">
-                <div class="rank">${card.rank}</div>
-                <div class="suit">${suitSymbols[card.suit]}</div>
-            </div>
-            <div class="card-center">${suitSymbols[card.suit]}</div>
-            <div class="card-corner bottom-right">
-                <div class="rank">${card.rank}</div>
-                <div class="suit">${suitSymbols[card.suit]}</div>
+    renderCard(card, faceUp) {
+        if (!faceUp) {
+            return '<div class="card face-down"></div>';
+        }
+        return `
+            <div class="card ${card.isRed ? 'red' : 'black'}">
+                <span class="rank">${card.rank}</span>
+                <span class="suit">${card.symbol}</span>
             </div>
         `;
     }
 
     /**
-     * Reveal dealer's hidden card
+     * Update scores
      */
-    revealDealerCard() {
-        this.renderHand(this.game.dealerHand, this.elements.dealerCards, true);
-    }
-
-    /**
-     * Update chips display
-     */
-    updateChipsDisplay() {
-        this.elements.playerChips.textContent = `$${this.game.playerChips}`;
-        this.elements.currentBet.textContent = this.game.currentBet;
-    }
-
-    /**
-     * Show betting controls
-     */
-    showBettingControls() {
-        this.elements.bettingControls.classList.remove('hidden');
-        this.elements.playerCards.innerHTML = '';
-        this.elements.dealerCards.innerHTML = '';
-        this.elements.playerValue.textContent = '-';
-        this.elements.dealerValue.textContent = '-';
-        this.elements.currentBet.textContent = '0';
-    }
-
-    /**
-     * Hide betting controls
-     */
-    hideBettingControls() {
-        this.elements.bettingControls.classList.add('hidden');
-    }
-
-    /**
-     * Show action buttons
-     */
-    showActionButtons() {
-        this.elements.actionButtons.classList.remove('hidden');
-        this.elements.hitBtn.disabled = false;
-        this.elements.standBtn.disabled = false;
-    }
-
-    /**
-     * Hide action buttons
-     */
-    hideActionButtons() {
-        this.elements.actionButtons.classList.add('hidden');
-    }
-
-    /**
-     * Show new round button
-     */
-    showNewRoundButton() {
-        this.hideActionButtons();
-        this.elements.newRoundControls.classList.remove('hidden');
-    }
-
-    /**
-     * Hide new round button
-     */
-    hideNewRoundButton() {
-        this.elements.newRoundControls.classList.add('hidden');
-    }
-
-    /**
-     * Log a message
-     */
-    log(message) {
-        const entry = document.createElement('div');
-        entry.className = 'log-entry';
-        entry.textContent = message;
-        this.elements.gameLog.appendChild(entry);
-        this.elements.gameLog.scrollTop = this.elements.gameLog.scrollHeight;
-    }
-
-    /**
-     * Show a screen
-     */
-    showScreen(screen) {
-        this.elements.setupScreen.classList.add('hidden');
-        this.elements.gameScreen.classList.add('hidden');
-        this.elements.endScreen.classList.add('hidden');
-
-        if (screen === 'setup') {
-            this.elements.setupScreen.classList.remove('hidden');
-            if (this.elements.gameLog) {
-                this.elements.gameLog.innerHTML = '';
+    updateScores(state) {
+        this.elements.playerScore.textContent = state.playerHand.length > 0 ? state.playerValue : '0';
+        
+        if (state.gameState === 'betting') {
+            this.elements.dealerScore.textContent = '0';
+        } else if (state.gameState === 'playing') {
+            // Only show value of visible card
+            const visibleCard = state.dealerHand[0];
+            let visibleValue = 0;
+            if (visibleCard) {
+                if (visibleCard.rank === 'A') {
+                    visibleValue = 11;
+                } else if (['K', 'Q', 'J'].includes(visibleCard.rank)) {
+                    visibleValue = 10;
+                } else {
+                    visibleValue = parseInt(visibleCard.rank);
+                }
             }
-        } else if (screen === 'game') {
-            this.elements.gameScreen.classList.remove('hidden');
-        } else if (screen === 'end') {
-            this.elements.endScreen.classList.remove('hidden');
+            this.elements.dealerScore.textContent = visibleValue;
+        } else {
+            this.elements.dealerScore.textContent = state.dealerValue;
         }
     }
 
     /**
-     * Show end screen
+     * Update game areas visibility
      */
-    showEndScreen(message) {
-        this.elements.endTitle.textContent = 'Game Over';
-        this.elements.endMessage.textContent = message;
-        this.showScreen('end');
+    updateGameAreas(state) {
+        // Hide all
+        this.elements.bettingArea.classList.add('hidden');
+        this.elements.actionButtons.classList.add('hidden');
+        this.elements.newHandArea.classList.add('hidden');
+        this.elements.gameStatus.classList.add('hidden');
+
+        switch (state.gameState) {
+            case 'betting':
+                this.elements.bettingArea.classList.remove('hidden');
+                break;
+            case 'playing':
+                this.elements.actionButtons.classList.remove('hidden');
+                this.elements.doubleBtn.disabled = !state.canDouble;
+                break;
+            case 'ended':
+                this.elements.newHandArea.classList.remove('hidden');
+                this.elements.gameStatus.classList.remove('hidden');
+                break;
+        }
+    }
+
+    /**
+     * Show game result
+     */
+    showResult(result) {
+        const status = this.elements.gameStatus;
+        const text = this.elements.statusText;
+        
+        status.className = 'game-status';
+
+        switch (result) {
+            case 'blackjack':
+                text.textContent = '🎰 BLACKJACK!';
+                status.classList.add('blackjack');
+                break;
+            case 'win':
+                text.textContent = '🎉 You Win!';
+                status.classList.add('win');
+                break;
+            case 'dealerBust':
+                text.textContent = '💥 Dealer Busts! You Win!';
+                status.classList.add('win');
+                break;
+            case 'push':
+                text.textContent = '🤝 Push';
+                status.classList.add('push');
+                break;
+            case 'bust':
+                text.textContent = '💔 Bust!';
+                status.classList.add('lose');
+                break;
+            case 'lose':
+                text.textContent = '😞 Dealer Wins';
+                status.classList.add('lose');
+                break;
+        }
     }
 }
 

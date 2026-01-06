@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balatro - Roguelike Poker</title>
+    <link rel="stylesheet" href="css/balatro.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🃏</text></svg>">
+</head>
+<body>
+    <!-- Navigation Arrows -->
+    <nav class="game-nav left">
+        <a href="index.html" class="nav-arrow">
+            <span class="arrow-icon">←</span>
+            <span class="game-name">Poker</span>
+        </a>
+    </nav>
+    <nav class="game-nav right">
+        <a href="blackjack.html" class="nav-arrow">
+            <span class="arrow-icon">→</span>
+            <span class="game-name">Blackjack</span>
+        </a>
+    </nav>
+
+    <!-- Navigation Dots -->
+    <div class="nav-dots">
+        <a href="index.html" class="nav-dot" data-game="Texas Hold'em"></a>
+        <a href="blackjack.html" class="nav-dot" data-game="Blackjack"></a>
+        <a href="balatro.html" class="nav-dot active" data-game="Balatro"></a>
+    </div>
+
+    <!-- Main Menu Screen -->
+    <div id="menu-screen" class="screen">
+        <div class="menu-container">
+            <h1>🃏 Balatro</h1>
+            <p class="subtitle">Roguelike Poker</p>
+            <p class="description">Play poker hands to score points and beat the blinds!</p>
+            
+            <button id="new-game-btn" class="menu-btn primary">🎮 New Game</button>
+            <button id="how-to-play-btn" class="menu-btn secondary">📖 How to Play</button>
+        </div>
+    </div>
+
+    <!-- How to Play Screen -->
+    <div id="tutorial-screen" class="screen hidden">
+        <div class="tutorial-container">
+            <h1>📖 How to Play</h1>
+            
+            <div class="tutorial-section">
+                <h2>🎯 Objective</h2>
+                <p>Score enough points to beat each blind. Progress through rounds to reach higher stakes!</p>
+            </div>
+            
+            <div class="tutorial-section">
+                <h2>🃏 Gameplay</h2>
+                <ul>
+                    <li>You have 4 hands and 3 discards per round</li>
+                    <li>Select up to 5 cards to play a poker hand</li>
+                    <li>Or select cards to discard and draw new ones</li>
+                    <li>Score points based on your poker hand</li>
+                </ul>
+            </div>
+            
+            <div class="tutorial-section">
+                <h2>📊 Scoring</h2>
+                <p>Each hand has base Chips and Multiplier values:</p>
+                <div class="hand-scores">
+                    <div class="hand-score-item">
+                        <span>High Card</span>
+                        <span>5 × 1</span>
+                    </div>
+                    <div class="hand-score-item">
+                        <span>Pair</span>
+                        <span>10 × 2</span>
+                    </div>
+                    <div class="hand-score-item">
+                        <span>Two Pair</span>
+                        <span>20 × 2</span>
+                    </div>
+                    <div class="hand-score-item">
+                        <span>Three of a Kind</span>
+                        <span>30 × 3</span>
+                    </div>
+                    <div class="hand-score-item">
+                        <span>Straight</span>
+                        <span>30 × 4</span>
+                    </div>
+                    <div class="hand-score-item">
+                        <span>Flush</span>
+                        <span>35 × 4</span>
+                    </div>
+                    <div class="hand-score-item">
+                        <span>Full House</span>
+                        <span>40 × 4</span>
+                    </div>
+                    <div class="hand-score-item">
+                        <span>Four of a Kind</span>
+                        <span>60 × 7</span>
+                    </div>
+                    <div class="hand-score-item">
+                        <span>Straight Flush</span>
+                        <span>100 × 8</span>
+                    </div>
+                    <div class="hand-score-item">
+                        <span>Royal Flush</span>
+                        <span>100 × 8</span>
+                    </div>
+                </div>
+            </div>
+            
+            <button id="back-to-menu-btn" class="menu-btn primary">← Back to Menu</button>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen hidden">
+        <div class="game-container">
+            <!-- Top Bar with Menu -->
+            <div class="top-bar">
+                <button id="menu-btn" class="icon-btn" title="Menu">☰</button>
+                <div class="ante-badge">Ante <span id="ante-number">1</span></div>
+                <div class="money-badge">$<span id="money-display">4</span></div>
+            </div>
+
+            <!-- Header Info -->
+            <div class="game-header">
+                <div class="blind-info">
+                    <span id="blind-name" class="blind-name">Small Blind</span>
+                    <div class="blind-score">
+                        <span class="label">Score at least</span>
+                        <span id="blind-target" class="target">300</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+                </div>
+                <div class="progress-labels">
+                    <span id="progress-current">0</span>
+                    <span id="progress-target">/ 300</span>
+                </div>
+            </div>
+
+            <!-- Score Display -->
+            <div class="score-area">
+                <div class="current-score">
+                    <span class="label">Round Score</span>
+                    <span id="round-score" class="score-value">0</span>
+                </div>
+                <div class="score-breakdown">
+                    <span id="chips-display" class="chips">0</span>
+                    <span class="multiply-symbol">×</span>
+                    <span id="mult-display" class="mult">0</span>
+                    <span class="equals-symbol">=</span>
+                    <span id="potential-score" class="potential">0</span>
+                </div>
+            </div>
+
+            <!-- Hand and Discards Display -->
+            <div class="resources">
+                <div class="resource hands-resource">
+                    <span class="label">Hands</span>
+                    <span id="hands-left" class="value">4</span>
+                </div>
+                <div class="resource discards-resource">
+                    <span class="label">Discards</span>
+                    <span id="discards-left" class="value">3</span>
+                </div>
+            </div>
+
+            <!-- Hand Type Display -->
+            <div id="hand-type-display" class="hand-type-display">
+                <span id="detected-hand" class="detected-hand">Select cards to play</span>
+            </div>
+
+            <!-- Player's Hand -->
+            <div id="player-hand" class="player-hand">
+                <!-- Cards will be rendered here -->
+            </div>
+
+            <!-- Sort and Action Buttons -->
+            <div class="controls-row">
+                <button id="sort-rank-btn" class="sort-btn" title="Sort by Rank">Sort ↕</button>
+                <button id="sort-suit-btn" class="sort-btn" title="Sort by Suit">Suit ♠♥</button>
+            </div>
+
+            <div class="action-buttons">
+                <button id="play-hand-btn" class="action-btn play" disabled>
+                    Play Hand
+                </button>
+                <button id="discard-btn" class="action-btn discard" disabled>
+                    Discard
+                </button>
+            </div>
+
+            <!-- Score History -->
+            <div class="score-history">
+                <h4>Score History</h4>
+                <div id="score-log" class="score-log">
+                    <!-- Score entries will appear here -->
+                </div>
+            </div>
+
+            <!-- Selected Cards Count -->
+            <div class="selection-info">
+                <span id="selection-count">0</span> / 5 cards selected
+            </div>
+        </div>
+
+        <!-- In-Game Menu Overlay -->
+        <div id="game-menu-overlay" class="overlay hidden">
+            <div class="overlay-content">
+                <h2>⏸️ Paused</h2>
+                <button id="resume-btn" class="menu-btn primary">▶️ Resume</button>
+                <button id="restart-btn" class="menu-btn secondary">🔄 Restart</button>
+                <button id="quit-btn" class="menu-btn secondary">🏠 Main Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Round Complete Screen -->
+    <div id="round-complete-screen" class="screen hidden">
+        <div class="round-complete-container">
+            <h1 id="round-result-title">🎉 Blind Beaten!</h1>
+            <p id="round-result-message">You scored enough points to advance!</p>
+            
+            <div class="round-stats">
+                <div class="stat">
+                    <span class="label">Final Score</span>
+                    <span id="final-round-score" class="value">0</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Target</span>
+                    <span id="final-target" class="value">0</span>
+                </div>
+            </div>
+            
+            <div class="earnings">
+                <h3>💰 Earnings</h3>
+                <div id="earnings-breakdown" class="earnings-breakdown">
+                    <!-- Earnings will be listed here -->
+                </div>
+            </div>
+            
+            <button id="next-round-btn" class="menu-btn primary">Continue →</button>
+        </div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="game-over-screen" class="screen hidden">
+        <div class="game-over-container">
+            <h1 id="game-over-title">💔 Game Over</h1>
+            <p id="game-over-message">You couldn't beat the blind!</p>
+            
+            <div class="final-stats">
+                <div class="stat">
+                    <span class="label">Ante Reached</span>
+                    <span id="final-ante" class="value">1</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Final Score</span>
+                    <span id="game-over-score" class="value">0</span>
+                </div>
+            </div>
+            
+            <button id="play-again-btn" class="menu-btn primary">🔄 Play Again</button>
+            <button id="main-menu-btn" class="menu-btn secondary">🏠 Main Menu</button>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/cards.js"></script>
+    <script src="js/hand-evaluator.js"></script>
+    <script src="js/balatro-game.js"></script>
+    <script src="js/balatro-ui.js"></script>
+</body>
+</html>
