@@ -29,7 +29,7 @@ class BlackjackGame {
      * Add to current bet
      */
     addBet(amount) {
-        if (amount <= this.playerChips && this.gameState === 'betting') {
+        if (this.currentBet + amount <= this.playerChips && this.gameState === 'betting') {
             this.currentBet += amount;
             return true;
         }
@@ -68,9 +68,18 @@ class BlackjackGame {
 
         this.gameState = 'playing';
 
-        // Check for blackjack
+        // Check for natural blackjack (21 with first 2 cards)
         if (this.calculateHandValue(this.playerHand) === 21) {
-            this.stand(); // Automatically end turn
+            this.gameState = 'dealerTurn';
+            // Reveal dealer hand and check if dealer also has blackjack
+            const dealerValue = this.calculateHandValue(this.dealerHand);
+            if (dealerValue === 21) {
+                // Both have blackjack - push
+                this.endGame('push');
+            } else {
+                // Player has blackjack, dealer doesn't
+                this.endGame('blackjack');
+            }
         }
 
         return true;
