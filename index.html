@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Texas Hold'em Poker</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🃏</text></svg>">
+</head>
+<body>
+    <!-- Setup Screen -->
+    <div id="setup-screen" class="screen">
+        <div class="setup-container">
+            <h1>🃏 Texas Hold'em</h1>
+            <p class="subtitle">Play against AI opponents</p>
+
+            <div class="form-group">
+                <label for="player-name">Your Name</label>
+                <input type="text" id="player-name" placeholder="Enter your name" maxlength="20">
+            </div>
+
+            <div class="form-group">
+                <label for="difficulty">Bot Difficulty</label>
+                <select id="difficulty">
+                    <option value="easy">Easy - Random play, good for beginners</option>
+                    <option value="medium" selected>Medium - Uses basic strategy</option>
+                    <option value="hard">Hard - Advanced AI with bluffing</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="bankroll">Starting Bankroll</label>
+                <select id="bankroll">
+                    <option value="500">$500 - Quick Game</option>
+                    <option value="1000" selected>$1,000 - Standard</option>
+                    <option value="2500">$2,500 - Extended Play</option>
+                    <option value="5000">$5,000 - High Stakes</option>
+                    <option value="10000">$10,000 - Deep Stack</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="bot-count">Number of Opponents</label>
+                <select id="bot-count">
+                    <option value="1">1 Bot (Heads Up)</option>
+                    <option value="2">2 Bots</option>
+                    <option value="3" selected>3 Bots</option>
+                    <option value="4">4 Bots</option>
+                    <option value="5">5 Bots</option>
+                </select>
+            </div>
+
+            <button id="start-btn" class="start-btn">🎰 Start Game</button>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen hidden">
+        <div class="game-container">
+            <div class="poker-table">
+                <!-- Pot Display -->
+                <div class="pot-display">
+                    <h2 id="pot-display">Pot: $0</h2>
+                </div>
+
+                <!-- Community Cards -->
+                <div id="community-cards" class="community-cards">
+                    <div class="card placeholder"></div>
+                    <div class="card placeholder"></div>
+                    <div class="card placeholder"></div>
+                    <div class="card placeholder"></div>
+                    <div class="card placeholder"></div>
+                </div>
+
+                <!-- Bot Players -->
+                <div id="bots-container" class="bots-container">
+                    <!-- Bots will be rendered here -->
+                </div>
+
+                <!-- Player Area -->
+                <div id="player-area" class="player-area">
+                    <!-- Player info will be rendered here -->
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div id="controls-container" class="controls-container">
+                <div class="action-buttons">
+                    <button id="fold-btn" class="action-btn fold" disabled>Fold</button>
+                    <button id="check-call-btn" class="action-btn check-call" disabled>Check</button>
+                    <button id="raise-btn" class="action-btn raise" disabled>Raise</button>
+                    <button id="all-in-btn" class="action-btn all-in" disabled>All-In</button>
+                </div>
+                <div id="raise-controls" class="raise-controls hidden">
+                    <input type="range" id="raise-slider" class="raise-slider" min="0" max="1000" value="0">
+                    <span id="raise-amount" class="raise-amount">$0</span>
+                </div>
+            </div>
+
+            <!-- Game Log -->
+            <div class="game-log">
+                <h3>Game Log</h3>
+                <div id="game-log">
+                    <!-- Log entries will appear here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- End Screen -->
+    <div id="end-screen" class="screen hidden">
+        <div class="end-container">
+            <h1 id="end-title">Game Over</h1>
+            <p id="end-message">Thanks for playing!</p>
+            <button id="play-again-btn" class="play-again-btn">Play Again</button>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/cards.js"></script>
+    <script src="js/hand-evaluator.js"></script>
+    <script src="js/bot-ai.js"></script>
+    <script src="js/poker-engine.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/ui.js"></script>
+</body>
+</html>
