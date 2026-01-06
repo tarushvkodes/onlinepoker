@@ -128,7 +128,7 @@ body {
     background: linear-gradient(180deg, var(--felt-green) 0%, #1e4620 100%);
     border-radius: 50%;
     padding: 40px;
-    margin: 0 auto;
+    margin: 80px auto 0;
     position: relative;
     box-shadow: 
         inset 0 0 50px rgba(0, 0, 0, 0.5),
@@ -572,5 +572,240 @@ body {
 
     .raise-slider {
         width: 100%;
+    }
+}
+
+/* Navigation Bar */
+.nav-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-card);
+    padding: 15px 30px;
+    display: flex;
+    gap: 20px;
+    box-shadow: var(--shadow);
+    z-index: 1000;
+}
+
+.nav-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: all 0.3s;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    color: var(--accent-gold);
+    background: var(--bg-secondary);
+}
+
+.nav-link.active {
+    color: var(--accent-gold);
+    background: var(--bg-secondary);
+}
+
+/* Blackjack Table */
+.blackjack-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.blackjack-table {
+    background: linear-gradient(180deg, var(--felt-green) 0%, #1e4620 100%);
+    border-radius: 20px;
+    padding: 40px;
+    margin: 80px auto 20px;
+    box-shadow: 
+        inset 0 0 50px rgba(0, 0, 0, 0.5),
+        0 10px 40px rgba(0, 0, 0, 0.5);
+    border: 8px solid #4a2c00;
+}
+
+.dealer-area,
+.blackjack-table .player-area {
+    margin: 30px 0;
+    text-align: center;
+}
+
+.player-info {
+    margin-bottom: 20px;
+}
+
+.player-info h3 {
+    color: var(--accent-gold);
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.player-stats {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 10px 0;
+    font-size: 1.1rem;
+}
+
+.chips-display,
+.bet-display {
+    color: var(--text-primary);
+    font-weight: bold;
+}
+
+.hand-value {
+    color: var(--accent-gold);
+    font-size: 2rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hand-cards {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    min-height: 120px;
+    flex-wrap: wrap;
+}
+
+/* Card back style for hidden dealer card */
+.card.card-back {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    background-image: 
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 10px,
+            rgba(255, 255, 255, 0.1) 10px,
+            rgba(255, 255, 255, 0.1) 20px
+        );
+    color: var(--text-primary);
+    font-size: 3rem;
+}
+
+/* Card corner layout */
+.card-corner {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.8rem;
+}
+
+.card-corner.top-left {
+    top: 5px;
+    left: 5px;
+}
+
+.card-corner.bottom-right {
+    bottom: 5px;
+    right: 5px;
+    transform: rotate(180deg);
+}
+
+.card-center {
+    font-size: 2.5rem;
+}
+
+/* Betting Controls */
+.betting-controls {
+    background: var(--bg-card);
+    border-radius: 15px;
+    padding: 30px;
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+.betting-controls h3 {
+    color: var(--accent-gold);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.bet-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.bet-btn {
+    padding: 12px 24px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 2px solid var(--accent-gold);
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.bet-btn:hover {
+    background: var(--accent-gold);
+    color: var(--bg-primary);
+    transform: translateY(-2px);
+}
+
+.custom-bet {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.custom-bet input {
+    padding: 12px 16px;
+    border: 2px solid var(--bg-secondary);
+    border-radius: 10px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 1rem;
+    width: 200px;
+}
+
+.custom-bet input:focus {
+    outline: none;
+    border-color: var(--accent-gold);
+}
+
+/* New Round Controls */
+.new-round-controls {
+    text-align: center;
+    margin: 20px auto;
+}
+
+/* Responsive adjustments for blackjack */
+@media (max-width: 768px) {
+    .blackjack-table {
+        padding: 20px;
+        margin-top: 100px;
+    }
+
+    .player-stats {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .bet-buttons {
+        flex-direction: column;
+    }
+
+    .bet-btn {
+        width: 100%;
+    }
+
+    .custom-bet {
+        flex-direction: column;
+    }
+
+    .custom-bet input {
+        width: 100%;
+    }
+
+    .nav-bar {
+        padding: 10px 15px;
     }
 }
