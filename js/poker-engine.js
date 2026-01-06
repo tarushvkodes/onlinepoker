@@ -103,7 +103,7 @@ class PokerEngine {
         // In heads-up, dealer posts small blind
         if (this.players.length === 2) {
             this.postBlind(this.dealerIndex, this.smallBlind);
-            this.postBlind((this.dealerIndex + 1) % 2, this.bigBlind);
+            this.postBlind((this.dealerIndex + 1) % this.players.length, this.bigBlind);
         } else {
             this.postBlind(sbIndex, this.smallBlind);
             this.postBlind(bbIndex, this.bigBlind);
@@ -111,7 +111,7 @@ class PokerEngine {
 
         this.currentBet = this.bigBlind;
         this.lastRaiserIndex = this.players.length === 2 ? 
-            (this.dealerIndex + 1) % 2 : bbIndex;
+            (this.dealerIndex + 1) % this.players.length : bbIndex;
     }
 
     postBlind(playerIndex, amount) {
@@ -357,17 +357,18 @@ class PokerEngine {
 
         // If no one has raised this round
         if (this.lastRaiserIndex === -1 || this.phase === GAME_PHASES.PREFLOP) {
-            // Preflop: Big blind gets to act last
+            // Preflop: Big blind gets to act last (option to raise)
             if (this.phase === GAME_PHASES.PREFLOP) {
                 const bbIndex = this.players.length === 2 ? 
-                    (this.dealerIndex + 1) % 2 : 
+                    (this.dealerIndex + 1) % this.players.length : 
                     (this.dealerIndex + 2) % this.players.length;
                 
                 const bb = this.players[bbIndex];
                 if (!bb.hasFolded && !bb.isAllIn && bb.totalBetThisRound === this.bigBlind && 
-                    this.currentBet === this.bigBlind) {
-                    // BB hasn't had a chance to act yet or wants to raise
-                    return this.currentPlayerIndex === bbIndex && this.lastRaiserIndex !== -1;
+                    this.currentBet === this.bigBlind && this.lastRaiserIndex === -1) {
+                    // No one has raised - BB still has option to raise
+                    // Round is complete only if we're back at BB AND someone has acted
+                    return false;
                 }
             }
             

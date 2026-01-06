@@ -164,11 +164,12 @@ function evaluate5CardHand(cards) {
     
     // Straight
     if (straight) {
-        // Handle wheel - Ace is low
+        // Handle wheel - Ace is low, only high card matters for comparison
         if (sorted[0].value === 14 && sorted[1].value === 5) {
-            return { rank: HAND_RANKINGS.STRAIGHT, name: HAND_NAMES[5], kickers: [5, 4, 3, 2, 1] };
+            return { rank: HAND_RANKINGS.STRAIGHT, name: HAND_NAMES[5], kickers: [5] };
         }
-        return { rank: HAND_RANKINGS.STRAIGHT, name: HAND_NAMES[5], kickers: values };
+        // For regular straights, only the high card matters
+        return { rank: HAND_RANKINGS.STRAIGHT, name: HAND_NAMES[5], kickers: [values[0]] };
     }
     
     // Three of a Kind

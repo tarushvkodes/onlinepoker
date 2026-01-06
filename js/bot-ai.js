@@ -271,9 +271,11 @@ class BotPlayer {
      * Gets position value (0 = early, 1 = button)
      */
     getPositionValue(gameState) {
-        if (!gameState.players || !gameState.dealerIndex) return 0.5;
+        if (!gameState.players || gameState.dealerIndex === undefined) return 0.5;
         
-        const playerIndex = gameState.players.indexOf(this);
+        const playerIndex = gameState.players.findIndex(p => p.name === this.name);
+        if (playerIndex === -1) return 0.5;
+        
         const totalPlayers = gameState.players.filter(p => !p.hasFolded).length;
         
         if (totalPlayers <= 1) return 1;
