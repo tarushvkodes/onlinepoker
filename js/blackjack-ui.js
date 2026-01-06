@@ -75,13 +75,13 @@ class BlackjackUI {
         // Betting controls
         this.elements.betButtons.forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const amount = parseInt(e.target.dataset.amount);
+                const amount = parseInt(e.target.dataset.amount, 10);
                 this.placeBet(amount);
             });
         });
 
         this.elements.placeBetBtn.addEventListener('click', () => {
-            const amount = parseInt(this.elements.customBetInput.value);
+            const amount = parseInt(this.elements.customBetInput.value, 10);
             if (amount && amount > 0) {
                 this.placeBet(amount);
                 this.elements.customBetInput.value = '';
@@ -90,7 +90,7 @@ class BlackjackUI {
 
         this.elements.customBetInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
-                const amount = parseInt(this.elements.customBetInput.value);
+                const amount = parseInt(this.elements.customBetInput.value, 10);
                 if (amount && amount > 0) {
                     this.placeBet(amount);
                     this.elements.customBetInput.value = '';
@@ -127,8 +127,8 @@ class BlackjackUI {
     startGame() {
         const settings = {
             playerName: this.elements.playerName.value.trim() || 'Player',
-            bankroll: parseInt(this.elements.bankroll.value),
-            minBet: parseInt(this.elements.minBet.value)
+            bankroll: parseInt(this.elements.bankroll.value, 10),
+            minBet: parseInt(this.elements.minBet.value, 10)
         };
 
         this.game = new window.BlackjackGame();

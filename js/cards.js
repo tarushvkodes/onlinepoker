@@ -92,6 +92,9 @@ class Deck {
      * @returns {Object} The dealt card
      */
     deal() {
+        if (this.cards.length === 0) {
+            return null;
+        }
         return this.cards.shift();
     }
 
@@ -102,7 +105,7 @@ class Deck {
      */
     dealMultiple(count) {
         const dealt = [];
-        for (let i = 0; i < count; i++) {
+        for (let i = 0; i < count && this.cards.length > 0; i++) {
             dealt.push(this.deal());
         }
         return dealt;
