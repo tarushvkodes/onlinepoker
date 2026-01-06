@@ -95,12 +95,15 @@
     <!-- Game Screen -->
     <div id="game-screen" class="screen hidden">
         <div class="game-container">
+            <!-- Top Bar with Menu -->
+            <div class="top-bar">
+                <button id="menu-btn" class="icon-btn" title="Menu">☰</button>
+                <div class="ante-badge">Ante <span id="ante-number">1</span></div>
+                <div class="money-badge">$<span id="money-display">4</span></div>
+            </div>
+
             <!-- Header Info -->
             <div class="game-header">
-                <div class="round-info">
-                    <span class="label">Ante</span>
-                    <span id="ante-number" class="value">1</span>
-                </div>
                 <div class="blind-info">
                     <span id="blind-name" class="blind-name">Small Blind</span>
                     <div class="blind-score">
@@ -108,9 +111,16 @@
                         <span id="blind-target" class="target">300</span>
                     </div>
                 </div>
-                <div class="money-info">
-                    <span class="label">$</span>
-                    <span id="money-display" class="value">4</span>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+                </div>
+                <div class="progress-labels">
+                    <span id="progress-current">0</span>
+                    <span id="progress-target">/ 300</span>
                 </div>
             </div>
 
@@ -124,16 +134,18 @@
                     <span id="chips-display" class="chips">0</span>
                     <span class="multiply-symbol">×</span>
                     <span id="mult-display" class="mult">0</span>
+                    <span class="equals-symbol">=</span>
+                    <span id="potential-score" class="potential">0</span>
                 </div>
             </div>
 
             <!-- Hand and Discards Display -->
             <div class="resources">
-                <div class="resource">
+                <div class="resource hands-resource">
                     <span class="label">Hands</span>
                     <span id="hands-left" class="value">4</span>
                 </div>
-                <div class="resource">
+                <div class="resource discards-resource">
                     <span class="label">Discards</span>
                     <span id="discards-left" class="value">3</span>
                 </div>
@@ -149,7 +161,12 @@
                 <!-- Cards will be rendered here -->
             </div>
 
-            <!-- Action Buttons -->
+            <!-- Sort and Action Buttons -->
+            <div class="controls-row">
+                <button id="sort-rank-btn" class="sort-btn" title="Sort by Rank">Sort ↕</button>
+                <button id="sort-suit-btn" class="sort-btn" title="Sort by Suit">Suit ♠♥</button>
+            </div>
+
             <div class="action-buttons">
                 <button id="play-hand-btn" class="action-btn play" disabled>
                     Play Hand
@@ -159,9 +176,27 @@
                 </button>
             </div>
 
+            <!-- Score History -->
+            <div class="score-history">
+                <h4>Score History</h4>
+                <div id="score-log" class="score-log">
+                    <!-- Score entries will appear here -->
+                </div>
+            </div>
+
             <!-- Selected Cards Count -->
             <div class="selection-info">
                 <span id="selection-count">0</span> / 5 cards selected
+            </div>
+        </div>
+
+        <!-- In-Game Menu Overlay -->
+        <div id="game-menu-overlay" class="overlay hidden">
+            <div class="overlay-content">
+                <h2>⏸️ Paused</h2>
+                <button id="resume-btn" class="menu-btn primary">▶️ Resume</button>
+                <button id="restart-btn" class="menu-btn secondary">🔄 Restart</button>
+                <button id="quit-btn" class="menu-btn secondary">🏠 Main Menu</button>
             </div>
         </div>
     </div>
