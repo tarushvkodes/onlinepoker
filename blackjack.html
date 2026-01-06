@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackjack</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🃏</text></svg>">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <a href="index.html" class="nav-link">🃏 Texas Hold'em</a>
+        <a href="blackjack.html" class="nav-link active">♠️ Blackjack</a>
+    </nav>
+
+    <!-- Setup Screen -->
+    <div id="setup-screen" class="screen">
+        <div class="setup-container">
+            <h1>♠️ Blackjack</h1>
+            <p class="subtitle">Classic card game - Get as close to 21 as possible!</p>
+
+            <div class="form-group">
+                <label for="player-name">Your Name</label>
+                <input type="text" id="player-name" placeholder="Enter your name" maxlength="20">
+            </div>
+
+            <div class="form-group">
+                <label for="bankroll">Starting Bankroll</label>
+                <select id="bankroll">
+                    <option value="500">$500 - Quick Game</option>
+                    <option value="1000" selected>$1,000 - Standard</option>
+                    <option value="2500">$2,500 - Extended Play</option>
+                    <option value="5000">$5,000 - High Stakes</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="min-bet">Minimum Bet</label>
+                <select id="min-bet">
+                    <option value="10">$10</option>
+                    <option value="25" selected>$25</option>
+                    <option value="50">$50</option>
+                    <option value="100">$100</option>
+                </select>
+            </div>
+
+            <button id="start-btn" class="start-btn">🎰 Start Game</button>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen hidden">
+        <div class="game-container blackjack-container">
+            <div class="blackjack-table">
+                <!-- Dealer Area -->
+                <div class="dealer-area">
+                    <div class="player-info">
+                        <h3>Dealer</h3>
+                        <div class="hand-value" id="dealer-value">-</div>
+                    </div>
+                    <div id="dealer-cards" class="hand-cards">
+                        <!-- Dealer cards will be rendered here -->
+                    </div>
+                </div>
+
+                <!-- Player Area -->
+                <div class="player-area">
+                    <div class="player-info">
+                        <h3 id="player-name-display">Player</h3>
+                        <div class="player-stats">
+                            <span class="chips-display">💰 <span id="player-chips">$1000</span></span>
+                            <span class="bet-display">Bet: $<span id="current-bet">0</span></span>
+                        </div>
+                        <div class="hand-value" id="player-value">-</div>
+                    </div>
+                    <div id="player-cards" class="hand-cards">
+                        <!-- Player cards will be rendered here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div id="controls-container" class="controls-container">
+                <!-- Betting Controls -->
+                <div id="betting-controls" class="betting-controls">
+                    <h3>Place Your Bet</h3>
+                    <div class="bet-buttons">
+                        <button class="bet-btn" data-amount="25">$25</button>
+                        <button class="bet-btn" data-amount="50">$50</button>
+                        <button class="bet-btn" data-amount="100">$100</button>
+                        <button class="bet-btn" data-amount="250">$250</button>
+                        <button class="bet-btn" data-amount="500">$500</button>
+                    </div>
+                    <div class="custom-bet">
+                        <input type="number" id="custom-bet-input" placeholder="Custom amount" min="1">
+                        <button id="place-bet-btn" class="action-btn">Place Bet</button>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div id="action-buttons" class="action-buttons hidden">
+                    <button id="hit-btn" class="action-btn">Hit</button>
+                    <button id="stand-btn" class="action-btn">Stand</button>
+                    <button id="double-btn" class="action-btn">Double Down</button>
+                </div>
+
+                <!-- New Round Button -->
+                <div id="new-round-controls" class="new-round-controls hidden">
+                    <button id="new-round-btn" class="action-btn check-call">New Round</button>
+                </div>
+            </div>
+
+            <!-- Game Log -->
+            <div class="game-log">
+                <h3>Game Log</h3>
+                <div id="game-log">
+                    <!-- Log entries will appear here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- End Screen -->
+    <div id="end-screen" class="screen hidden">
+        <div class="end-container">
+            <h1 id="end-title">Game Over</h1>
+            <p id="end-message">Thanks for playing!</p>
+            <button id="play-again-btn" class="play-again-btn">Play Again</button>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/cards.js"></script>
+    <script src="js/blackjack-game.js"></script>
+    <script src="js/blackjack-ui.js"></script>
+</body>
+</html>
