@@ -72,6 +72,51 @@ function cardToString(card) {
     return `${card.rank}${card.symbol}`;
 }
 
+/**
+ * Deck class for card games
+ */
+class Deck {
+    constructor() {
+        this.cards = createDeck();
+    }
+
+    /**
+     * Shuffle the deck
+     */
+    shuffle() {
+        this.cards = shuffleDeck(this.cards);
+    }
+
+    /**
+     * Deal a single card from the deck
+     * @returns {Object} The dealt card
+     */
+    deal() {
+        return this.cards.shift();
+    }
+
+    /**
+     * Deal multiple cards from the deck
+     * @param {number} count - Number of cards to deal
+     * @returns {Array} Array of dealt cards
+     */
+    dealMultiple(count) {
+        const dealt = [];
+        for (let i = 0; i < count; i++) {
+            dealt.push(this.deal());
+        }
+        return dealt;
+    }
+
+    /**
+     * Get remaining cards count
+     * @returns {number} Number of cards left
+     */
+    get length() {
+        return this.cards.length;
+    }
+}
+
 // Export for use in other modules
 if (typeof window !== 'undefined') {
     window.Cards = {
@@ -84,4 +129,5 @@ if (typeof window !== 'undefined') {
         dealCards,
         cardToString
     };
+    window.Deck = Deck;
 }
