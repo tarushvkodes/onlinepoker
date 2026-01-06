@@ -39,10 +39,16 @@ class BalatroUI {
         this.elements.blindTarget = document.getElementById('blind-target');
         this.elements.moneyDisplay = document.getElementById('money-display');
 
+        // Progress bar
+        this.elements.progressFill = document.getElementById('progress-fill');
+        this.elements.progressCurrent = document.getElementById('progress-current');
+        this.elements.progressTarget = document.getElementById('progress-target');
+
         // Score area
         this.elements.roundScore = document.getElementById('round-score');
         this.elements.chipsDisplay = document.getElementById('chips-display');
         this.elements.multDisplay = document.getElementById('mult-display');
+        this.elements.potentialScore = document.getElementById('potential-score');
 
         // Resources
         this.elements.handsLeft = document.getElementById('hands-left');
@@ -53,9 +59,23 @@ class BalatroUI {
         this.elements.playerHand = document.getElementById('player-hand');
         this.elements.selectionCount = document.getElementById('selection-count');
 
+        // Sort buttons
+        this.elements.sortRankBtn = document.getElementById('sort-rank-btn');
+        this.elements.sortSuitBtn = document.getElementById('sort-suit-btn');
+
         // Action buttons
         this.elements.playHandBtn = document.getElementById('play-hand-btn');
         this.elements.discardBtn = document.getElementById('discard-btn');
+
+        // Score history
+        this.elements.scoreLog = document.getElementById('score-log');
+
+        // In-game menu
+        this.elements.menuBtn = document.getElementById('menu-btn');
+        this.elements.gameMenuOverlay = document.getElementById('game-menu-overlay');
+        this.elements.resumeBtn = document.getElementById('resume-btn');
+        this.elements.restartBtn = document.getElementById('restart-btn');
+        this.elements.quitBtn = document.getElementById('quit-btn');
 
         // Round complete screen
         this.elements.roundResultTitle = document.getElementById('round-result-title');
@@ -87,12 +107,43 @@ class BalatroUI {
         this.elements.playHandBtn.addEventListener('click', () => this.handlePlayHand());
         this.elements.discardBtn.addEventListener('click', () => this.handleDiscard());
 
+        // Sort buttons
+        if (this.elements.sortRankBtn) {
+            this.elements.sortRankBtn.addEventListener('click', () => this.sortByRank());
+        }
+        if (this.elements.sortSuitBtn) {
+            this.elements.sortSuitBtn.addEventListener('click', () => this.sortBySuit());
+        }
+
+        // In-game menu
+        if (this.elements.menuBtn) {
+            this.elements.menuBtn.addEventListener('click', () => this.toggleGameMenu());
+        }
+        if (this.elements.resumeBtn) {
+            this.elements.resumeBtn.addEventListener('click', () => this.toggleGameMenu());
+        }
+        if (this.elements.restartBtn) {
+            this.elements.restartBtn.addEventListener('click', () => {
+                this.toggleGameMenu();
+                this.startNewGame();
+            });
+        }
+        if (this.elements.quitBtn) {
+            this.elements.quitBtn.addEventListener('click', () => {
+                this.toggleGameMenu();
+                this.showScreen('menu');
+            });
+        }
+
         // Round complete
         this.elements.nextRoundBtn.addEventListener('click', () => this.handleNextRound());
 
         // Game over
         this.elements.playAgainBtn.addEventListener('click', () => this.startNewGame());
         this.elements.mainMenuBtn.addEventListener('click', () => this.showScreen('menu'));
+
+        // Score log tracking
+        this.scoreHistory = [];
     }
 
     /**
@@ -130,6 +181,7 @@ class BalatroUI {
     startNewGame() {
         this.game = new window.BalatroGame();
         this.game.newGame();
+        this.scoreHistory = [];
         this.showScreen('game');
         this.updateDisplay();
     }
@@ -145,6 +197,14 @@ class BalatroUI {
         this.elements.blindName.textContent = state.blindName;
         this.elements.blindTarget.textContent = state.targetScore.toLocaleString();
         this.elements.moneyDisplay.textContent = state.money;
+
+        // Progress bar
+        if (this.elements.progressFill) {
+            const progressPercent = Math.min(100, (state.roundScore / state.targetScore) * 100);
+            this.elements.progressFill.style.width = `${progressPercent}%`;
+            this.elements.progressCurrent.textContent = state.roundScore.toLocaleString();
+            this.elements.progressTarget.textContent = `/ ${state.targetScore.toLocaleString()}`;
+        }
 
         // Score
         this.elements.roundScore.textContent = state.roundScore.toLocaleString();
@@ -164,6 +224,9 @@ class BalatroUI {
 
         // Update button states
         this.updateButtons(state);
+
+        // Update score history
+        this.updateScoreHistory();
     }
 
     /**
@@ -208,10 +271,16 @@ class BalatroUI {
             this.elements.detectedHand.textContent = preview.handName;
             this.elements.chipsDisplay.textContent = preview.chips;
             this.elements.multDisplay.textContent = preview.mult;
+            if (this.elements.potentialScore) {
+                this.elements.potentialScore.textContent = preview.potentialScore.toLocaleString();
+            }
         } else {
             this.elements.detectedHand.textContent = 'Select cards to play';
             this.elements.chipsDisplay.textContent = '0';
             this.elements.multDisplay.textContent = '0';
+            if (this.elements.potentialScore) {
+                this.elements.potentialScore.textContent = '0';
+            }
         }
     }
 
@@ -232,6 +301,14 @@ class BalatroUI {
         const result = this.game.playHand();
         
         if (result.success) {
+            // Add to score history
+            this.scoreHistory.push({
+                hand: result.handName,
+                chips: result.chips,
+                mult: result.mult,
+                score: result.score
+            });
+
             // Animate score
             this.elements.roundScore.classList.add('score-animate');
             setTimeout(() => {
@@ -293,8 +370,67 @@ class BalatroUI {
      */
     handleNextRound() {
         this.game.advanceToNext();
+        this.scoreHistory = [];
         this.showScreen('game');
         this.updateDisplay();
+    }
+
+    /**
+     * Toggle in-game menu
+     */
+    toggleGameMenu() {
+        if (this.elements.gameMenuOverlay) {
+            this.elements.gameMenuOverlay.classList.toggle('hidden');
+        }
+    }
+
+    /**
+     * Sort hand by rank
+     */
+    sortByRank() {
+        if (this.game) {
+            this.game.hand.sort((a, b) => a.value - b.value);
+            this.game.selectedCards = [];
+            this.updateDisplay();
+        }
+    }
+
+    /**
+     * Sort hand by suit
+     */
+    sortBySuit() {
+        if (this.game) {
+            const suitOrder = { 'spades': 0, 'hearts': 1, 'diamonds': 2, 'clubs': 3 };
+            this.game.hand.sort((a, b) => {
+                if (suitOrder[a.suit] !== suitOrder[b.suit]) {
+                    return suitOrder[a.suit] - suitOrder[b.suit];
+                }
+                return a.value - b.value;
+            });
+            this.game.selectedCards = [];
+            this.updateDisplay();
+        }
+    }
+
+    /**
+     * Update score history display
+     */
+    updateScoreHistory() {
+        if (!this.elements.scoreLog) return;
+        
+        if (!this.scoreHistory || this.scoreHistory.length === 0) {
+            this.elements.scoreLog.innerHTML = '<div class="score-entry empty">No hands played yet</div>';
+            return;
+        }
+
+        this.elements.scoreLog.innerHTML = this.scoreHistory.map((entry, index) => `
+            <div class="score-entry">
+                <span class="entry-num">#${index + 1}</span>
+                <span class="entry-hand">${entry.hand}</span>
+                <span class="entry-calc">${entry.chips}×${entry.mult}</span>
+                <span class="entry-score">+${entry.score.toLocaleString()}</span>
+            </div>
+        `).join('');
     }
 }
 

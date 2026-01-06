@@ -1,0 +1,516 @@
+/* 
+ * Blackjack Styles
+ */
+
+:root {
+    --bg-primary: #1a1a2e;
+    --bg-secondary: #16213e;
+    --bg-card: #0f0f23;
+    --bg-dark: #0a0a15;
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0a0;
+    --accent-gold: #ffd700;
+    --accent-green: #2ecc71;
+    --accent-red: #e74c3c;
+    --accent-blue: #3498db;
+    --card-white: #fafafa;
+    --card-red: #e74c3c;
+    --card-black: #2c3e50;
+    --felt-green: #2d5a27;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Screen Management */
+.screen {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Menu Styles */
+.menu-container,
+.rules-container,
+.gameover-container {
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.menu-container h1,
+.rules-container h1,
+.gameover-container h1 {
+    color: var(--accent-gold);
+    margin-bottom: 10px;
+    font-size: 2.5rem;
+}
+
+.subtitle {
+    color: var(--accent-green);
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.description {
+    color: var(--text-secondary);
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.form-group select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--bg-secondary);
+    border-radius: 10px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.menu-btn {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-bottom: 15px;
+    text-decoration: none;
+    text-align: center;
+}
+
+.menu-btn.primary {
+    background: linear-gradient(135deg, var(--accent-gold) 0%, #ffc107 100%);
+    color: var(--bg-primary);
+}
+
+.menu-btn.secondary {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 2px solid var(--accent-gold);
+}
+
+.menu-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+}
+
+/* Rules */
+.rule-section {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.rule-section h2 {
+    color: var(--accent-blue);
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.rule-section p,
+.rule-section li {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.rule-section ul {
+    padding-left: 20px;
+}
+
+/* Game Container */
+.game-container {
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+    padding-top: 60px;
+}
+
+/* Chips Display */
+.chips-display {
+    background: var(--bg-card);
+    border-radius: 25px;
+    padding: 10px 25px;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.chips-display .label {
+    color: var(--text-secondary);
+    margin-right: 10px;
+}
+
+.chips-display .chips-value {
+    color: var(--accent-gold);
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+/* Card Areas */
+.dealer-area,
+.player-area {
+    background: linear-gradient(180deg, var(--felt-green) 0%, #1e4620 100%);
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 20px;
+    min-height: 180px;
+}
+
+.area-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.area-label {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.score-badge {
+    background: rgba(0, 0, 0, 0.5);
+    color: var(--accent-gold);
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.cards-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    min-height: 100px;
+}
+
+/* Card Styles */
+.card {
+    width: 70px;
+    height: 100px;
+    background: var(--card-white);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    animation: dealCard 0.3s ease-out;
+}
+
+@keyframes dealCard {
+    from {
+        opacity: 0;
+        transform: translateY(-30px) rotate(-5deg);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) rotate(0);
+    }
+}
+
+.card.face-down {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    background-image: 
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 10px,
+            rgba(255, 255, 255, 0.1) 10px,
+            rgba(255, 255, 255, 0.1) 20px
+        );
+}
+
+.card .rank {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.card .suit {
+    font-size: 1.8rem;
+}
+
+.card.red .rank,
+.card.red .suit {
+    color: var(--card-red);
+}
+
+.card.black .rank,
+.card.black .suit {
+    color: var(--card-black);
+}
+
+/* Game Status */
+.game-status {
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.game-status #status-text {
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 15px 40px;
+    border-radius: 15px;
+    display: inline-block;
+}
+
+.game-status.win #status-text {
+    background: var(--accent-green);
+    color: white;
+}
+
+.game-status.lose #status-text {
+    background: var(--accent-red);
+    color: white;
+}
+
+.game-status.push #status-text {
+    background: var(--accent-blue);
+    color: white;
+}
+
+.game-status.blackjack #status-text {
+    background: linear-gradient(135deg, var(--accent-gold) 0%, #ffc107 100%);
+    color: var(--bg-primary);
+}
+
+/* Betting Area */
+.betting-area {
+    background: var(--bg-card);
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+}
+
+.current-bet {
+    margin-bottom: 20px;
+}
+
+.current-bet .label {
+    color: var(--text-secondary);
+    margin-right: 10px;
+}
+
+.current-bet #current-bet {
+    color: var(--accent-gold);
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.bet-chips {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.chip-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px dashed rgba(255, 255, 255, 0.3);
+    background: var(--bg-secondary);
+    color: var(--accent-gold);
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.chip-btn:hover {
+    transform: scale(1.1);
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+}
+
+.chip-btn:active {
+    transform: scale(0.95);
+}
+
+.bet-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.bet-action-btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.bet-action-btn.primary {
+    background: linear-gradient(135deg, var(--accent-green) 0%, #27ae60 100%);
+    color: white;
+}
+
+.bet-action-btn.primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.bet-action-btn:not(:disabled):hover {
+    transform: translateY(-2px);
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+}
+
+.action-btn {
+    padding: 15px 35px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.action-btn.hit {
+    background: linear-gradient(135deg, var(--accent-green) 0%, #27ae60 100%);
+    color: white;
+}
+
+.action-btn.stand {
+    background: linear-gradient(135deg, var(--accent-red) 0%, #c0392b 100%);
+    color: white;
+}
+
+.action-btn.double {
+    background: linear-gradient(135deg, var(--accent-gold) 0%, #ffc107 100%);
+    color: var(--bg-primary);
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* New Hand Area */
+.new-hand-area {
+    text-align: center;
+    padding: 20px;
+}
+
+.new-hand-area .menu-btn {
+    display: inline-block;
+    width: auto;
+    padding: 15px 40px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .game-container {
+        padding: 15px;
+        padding-top: 50px;
+    }
+
+    .dealer-area,
+    .player-area {
+        padding: 15px;
+        min-height: 140px;
+    }
+
+    .card {
+        width: 55px;
+        height: 80px;
+    }
+
+    .card .rank {
+        font-size: 1.2rem;
+    }
+
+    .card .suit {
+        font-size: 1.4rem;
+    }
+
+    .chip-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 0.8rem;
+    }
+
+    .action-buttons {
+        flex-wrap: wrap;
+    }
+
+    .action-btn {
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .menu-container h1 {
+        font-size: 2rem;
+    }
+
+    .cards-row {
+        gap: 5px;
+    }
+
+    .card {
+        width: 45px;
+        height: 65px;
+    }
+
+    .card .rank {
+        font-size: 1rem;
+    }
+
+    .card .suit {
+        font-size: 1.1rem;
+    }
+}

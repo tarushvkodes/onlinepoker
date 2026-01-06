@@ -5,9 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Balatro - Roguelike Poker</title>
     <link rel="stylesheet" href="css/balatro.css">
+    <link rel="stylesheet" href="css/navigation.css">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🃏</text></svg>">
 </head>
 <body>
+    <!-- Navigation Arrows -->
+    <nav class="game-nav left">
+        <a href="index.html" class="nav-arrow">
+            <span class="arrow-icon">←</span>
+            <span class="game-name">Poker</span>
+        </a>
+    </nav>
+    <nav class="game-nav right">
+        <a href="blackjack.html" class="nav-arrow">
+            <span class="arrow-icon">→</span>
+            <span class="game-name">Blackjack</span>
+        </a>
+    </nav>
+
+    <!-- Navigation Dots -->
+    <div class="nav-dots">
+        <a href="index.html" class="nav-dot" data-game="Texas Hold'em"></a>
+        <a href="blackjack.html" class="nav-dot" data-game="Blackjack"></a>
+        <a href="balatro.html" class="nav-dot active" data-game="Balatro"></a>
+    </div>
+
     <!-- Main Menu Screen -->
     <div id="menu-screen" class="screen">
         <div class="menu-container">
@@ -17,7 +39,6 @@
             
             <button id="new-game-btn" class="menu-btn primary">🎮 New Game</button>
             <button id="how-to-play-btn" class="menu-btn secondary">📖 How to Play</button>
-            <a href="index.html" class="menu-btn secondary">🎰 Play Texas Hold'em</a>
         </div>
     </div>
 

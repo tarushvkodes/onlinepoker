@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackjack</title>
+    <link rel="stylesheet" href="css/blackjack.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🃏</text></svg>">
+</head>
+<body>
+    <!-- Navigation Arrows -->
+    <nav class="game-nav left">
+        <a href="balatro.html" class="nav-arrow">
+            <span class="arrow-icon">←</span>
+            <span class="game-name">Balatro</span>
+        </a>
+    </nav>
+    <nav class="game-nav right">
+        <a href="index.html" class="nav-arrow">
+            <span class="arrow-icon">→</span>
+            <span class="game-name">Poker</span>
+        </a>
+    </nav>
+
+    <!-- Navigation Dots -->
+    <div class="nav-dots">
+        <a href="index.html" class="nav-dot" data-game="Texas Hold'em"></a>
+        <a href="blackjack.html" class="nav-dot active" data-game="Blackjack"></a>
+        <a href="balatro.html" class="nav-dot" data-game="Balatro"></a>
+    </div>
+
+    <!-- Main Menu Screen -->
+    <div id="menu-screen" class="screen">
+        <div class="menu-container">
+            <h1>🃏 Blackjack</h1>
+            <p class="subtitle">Beat the Dealer to 21</p>
+            <p class="description">Get as close to 21 as possible without going over!</p>
+            
+            <div class="form-group">
+                <label for="starting-chips">Starting Chips</label>
+                <select id="starting-chips">
+                    <option value="100">$100</option>
+                    <option value="500" selected>$500</option>
+                    <option value="1000">$1,000</option>
+                    <option value="5000">$5,000</option>
+                </select>
+            </div>
+            
+            <button id="start-game-btn" class="menu-btn primary">🎰 Start Game</button>
+            <button id="rules-btn" class="menu-btn secondary">📖 Rules</button>
+        </div>
+    </div>
+
+    <!-- Rules Screen -->
+    <div id="rules-screen" class="screen hidden">
+        <div class="rules-container">
+            <h1>📖 Blackjack Rules</h1>
+            
+            <div class="rule-section">
+                <h2>🎯 Objective</h2>
+                <p>Beat the dealer by getting a hand value closer to 21 without going over.</p>
+            </div>
+            
+            <div class="rule-section">
+                <h2>🃏 Card Values</h2>
+                <ul>
+                    <li>Number cards (2-10): Face value</li>
+                    <li>Face cards (J, Q, K): 10 points</li>
+                    <li>Ace: 1 or 11 points (whichever is better)</li>
+                </ul>
+            </div>
+            
+            <div class="rule-section">
+                <h2>🎮 Actions</h2>
+                <ul>
+                    <li><strong>Hit:</strong> Take another card</li>
+                    <li><strong>Stand:</strong> Keep your current hand</li>
+                    <li><strong>Double:</strong> Double your bet and take one more card</li>
+                </ul>
+            </div>
+            
+            <div class="rule-section">
+                <h2>💰 Payouts</h2>
+                <ul>
+                    <li>Win: 1:1 (get your bet back plus same amount)</li>
+                    <li>Blackjack (21 with 2 cards): 3:2</li>
+                    <li>Push (tie): Get your bet back</li>
+                </ul>
+            </div>
+            
+            <button id="back-from-rules-btn" class="menu-btn primary">← Back</button>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen hidden">
+        <div class="game-container">
+            <!-- Chips Display -->
+            <div class="chips-display">
+                <span class="label">Chips:</span>
+                <span id="player-chips" class="chips-value">$500</span>
+            </div>
+
+            <!-- Dealer Area -->
+            <div class="dealer-area">
+                <div class="area-header">
+                    <span class="area-label">Dealer</span>
+                    <span id="dealer-score" class="score-badge">0</span>
+                </div>
+                <div id="dealer-cards" class="cards-row">
+                    <!-- Dealer cards render here -->
+                </div>
+            </div>
+
+            <!-- Game Status -->
+            <div id="game-status" class="game-status hidden">
+                <span id="status-text">You Win!</span>
+            </div>
+
+            <!-- Player Area -->
+            <div class="player-area">
+                <div class="area-header">
+                    <span class="area-label">Your Hand</span>
+                    <span id="player-score" class="score-badge">0</span>
+                </div>
+                <div id="player-cards" class="cards-row">
+                    <!-- Player cards render here -->
+                </div>
+            </div>
+
+            <!-- Betting Area -->
+            <div id="betting-area" class="betting-area">
+                <div class="current-bet">
+                    <span class="label">Bet:</span>
+                    <span id="current-bet">$0</span>
+                </div>
+                <div class="bet-chips">
+                    <button class="chip-btn" data-value="5">$5</button>
+                    <button class="chip-btn" data-value="10">$10</button>
+                    <button class="chip-btn" data-value="25">$25</button>
+                    <button class="chip-btn" data-value="50">$50</button>
+                    <button class="chip-btn" data-value="100">$100</button>
+                </div>
+                <div class="bet-actions">
+                    <button id="clear-bet-btn" class="bet-action-btn">Clear</button>
+                    <button id="deal-btn" class="bet-action-btn primary" disabled>Deal</button>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div id="action-buttons" class="action-buttons hidden">
+                <button id="hit-btn" class="action-btn hit">Hit</button>
+                <button id="stand-btn" class="action-btn stand">Stand</button>
+                <button id="double-btn" class="action-btn double">Double</button>
+            </div>
+
+            <!-- New Hand Button -->
+            <div id="new-hand-area" class="new-hand-area hidden">
+                <button id="new-hand-btn" class="menu-btn primary">New Hand</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="gameover-screen" class="screen hidden">
+        <div class="gameover-container">
+            <h1>💔 Out of Chips!</h1>
+            <p>You've run out of chips. Better luck next time!</p>
+            <button id="restart-btn" class="menu-btn primary">🔄 Play Again</button>
+            <a href="index.html" class="menu-btn secondary">🎰 Try Poker</a>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/cards.js"></script>
+    <script src="js/blackjack-game.js"></script>
+    <script src="js/blackjack-ui.js"></script>
+</body>
+</html>
